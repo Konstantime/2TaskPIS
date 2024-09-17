@@ -11,9 +11,9 @@ namespace _2TaskPIS
 {
     public class MeterData
     {
-        public string typeResourse { get; }
-        public DateTime date { get; }
-        public double value { get; }
+        public string typeResourse { get; set; }
+        public DateTime date { get; set; }
+        public double value { get; set; }
 
         public MeterData(string input)  //    "'water';2024.12.10;10.5"
         {
