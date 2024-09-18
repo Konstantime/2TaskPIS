@@ -5,14 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _2TaskPIS
-{
-    public class MeterDataElectricity: MeterData
-    {
+namespace _2TaskPIS {
+    public class MeterDataElectricity: MeterData {
         public int numberWatts { get; }
         public int frequency { get; }
-        public MeterDataElectricity(string input) : base(input)
-        {
+        public MeterDataElectricity(string input) : base(input) {
             input = input.Replace("'", "");
             string[] dates = input.Split(';');
 

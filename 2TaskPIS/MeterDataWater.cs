@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 
 namespace _2TaskPIS
 {
-    public class MeterDataWater: MeterData
-    {
+    public class MeterDataWater: MeterData{
         public bool isСold { get; }
         public int quantity { get; }
-        public MeterDataWater(string input) : base(input)
-        {
+        public MeterDataWater(string input) : base(input){
             input = input.Replace("'", "");
             string[] dates = input.Split(';');
 

@@ -7,16 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace _2TaskPIS
-{
-    public class MeterData
-    {
+namespace _2TaskPIS {
+    public class MeterData {
         public string typeResourse { get; set; }
         public DateTime date { get; set; }
         public double value { get; set; }
 
-        public MeterData(string input)  //    "'water';2024.12.10;10.5"
-        {
+        public MeterData() { }
+        public MeterData(string input) {
             input = input.Replace("'", "");
             string[] dates = input.Split(';');
 
@@ -25,8 +23,7 @@ namespace _2TaskPIS
             value = double.Parse(dates[2], CultureInfo.InvariantCulture);
         }
 
-        public void print(Stream stream)
-        {
+        public void print(Stream stream) {
             byte[] bytes = Encoding.UTF8.GetBytes(typeResourse);
             stream.Write(bytes, 0, bytes.Length);
 
