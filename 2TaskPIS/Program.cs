@@ -19,7 +19,7 @@ namespace _2TaskPIS {
 
             MeterData meterReading = new MeterData("'water';2024.12.10;10.5");
             MeterDataWater meterDataWater = new MeterDataWater("'water';2024.12.10;10.5;true;50");
-            MeterDataElectricity meterDataElectricity = new MeterDataElectricity("'water';2024.12.10;10.5;500;50");
+            MeterDataElectricity meterDataElectricity = new MeterDataElectricity("'electro';2024.12.10;10.5;500;50;Rusal");
 
             CreateListMeterDatas();
 
@@ -38,8 +38,6 @@ namespace _2TaskPIS {
                 if(GetMeterData(typeMeterData, codeObject[i]) != null) {
                     meterDatas.Add(GetMeterData(typeMeterData, codeObject[i]));
                 }
-                
-                Console.WriteLine(meterDatas[i].typeResourse);
             }
         }
 
@@ -47,10 +45,13 @@ namespace _2TaskPIS {
             switch (typeMeterData) {
                 case TypeMeterData.MeterData:
                     return new MeterData(code);
+
                 case TypeMeterData.MeterDataWater:
                     return new MeterDataWater(code);
+
                 case TypeMeterData.MeterDataElectricity:
                     return new MeterDataElectricity(code);
+
                 default:
                     return null;
             }
