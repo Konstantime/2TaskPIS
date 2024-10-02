@@ -17,47 +17,53 @@ namespace _2TaskPIS {
     internal class Program {
         static void Main(string[] args) {  //  19   вариант 2
 
-            MeterData meterReading = new MeterData("'water';2024.12.10;10.5");
-            MeterDataWater meterDataWater = new MeterDataWater("'water';2024.12.10;10.5;true;50");
-            MeterDataElectricity meterDataElectricity = new MeterDataElectricity("'electro';2024.12.10;10.5;500;50;Rusal");
+            List<MeterData> meterDatas = CreateListMeterDatas();
 
-            CreateListMeterDatas();
+            WritingAllValues(meterDatas);
 
             Console.ReadLine();
         }
 
-        static private void CreateListMeterDatas() {
-            string[] codeObject = GetObjectCodesFromTextFile("C:/Users/Kostya/OneDrive/Desktop/MeterData.txt");
-            List<MeterData> meterDatas = new List<MeterData>();
-
-            TypeMeterData typeMeterData;
-            for (int i = 0; i < codeObject.Length; i++)
-            {
-                typeMeterData = DetermineTypeOfObject(codeObject[i]);
-
-                if(GetMeterData(typeMeterData, codeObject[i]) != null) {
-                    meterDatas.Add(GetMeterData(typeMeterData, codeObject[i]));
-                }
+        static private void WritingAllValues( List<MeterData> meterDatas ) {
+            foreach( var meterData in meterDatas ) {
+                Console.WriteLine( meterData.GetAllProperties() );
             }
         }
 
-        static private MeterData GetMeterData(TypeMeterData typeMeterData, string code) {
-            switch (typeMeterData) {
-                case TypeMeterData.MeterData:
-                    return new MeterData(code);
+        static private List<MeterData> CreateListMeterDatas() {
+            string[] lines = GetLinesCodesFromTextFile("C:/Users/Kostya/OneDrive/Desktop/MeterData.txt");
+            List<MeterData> meterDatas = new List<MeterData>();
 
+            TypeMeterData typeMeterData;
+            for (int i = 0; i < lines.Length; i++) {
+                typeMeterData = DetermineTypeOfObject(lines[i]);
+
+                if (GetMeterData(typeMeterData, lines[i]) != null) {
+                    meterDatas.Add(GetMeterData(typeMeterData, lines[i]));
+                }
+            }
+
+            return meterDatas;
+        }
+
+        static private MeterData GetMeterData(TypeMeterData typeMeterData, string lineCode) {
+            switch (typeMeterData) {
                 case TypeMeterData.MeterDataWater:
-                    return new MeterDataWater(code);
+                    var meterDataWater = new MeterDataWater();
+                    meterDataWater.SetFieldValues(lineCode);
+                    return meterDataWater;
 
                 case TypeMeterData.MeterDataElectricity:
-                    return new MeterDataElectricity(code);
+                    var meterDataElectricity = new MeterDataElectricity();
+                    meterDataElectricity.SetFieldValues(lineCode);
+                    return meterDataElectricity;
 
                 default:
                     return null;
             }
         }
 
-        static private string[] GetObjectCodesFromTextFile(string filePath) {
+        static private string[] GetLinesCodesFromTextFile(string filePath) {
             string fileContent = GetTextFromFile(filePath);
 
             string[] result = fileContent.Split('\r');
@@ -66,25 +72,20 @@ namespace _2TaskPIS {
         }
 
         static private string GetTextFromFile(string filePath) {
-            try
-            {
-                using (StreamReader reader = new StreamReader(filePath))
-                {
+            try {
+                using (StreamReader reader = new StreamReader(filePath)) {
                     return reader.ReadToEnd();
                 }
             }
-            catch (IOException ex)
-            {
+            catch (IOException ex) {
                 Console.WriteLine($"Error reading file: {ex.Message}");
                 return null;
             }
         }
 
-        static private TypeMeterData DetermineTypeOfObject( string codeObject) {
+        static private TypeMeterData DetermineTypeOfObject(string codeObject) {
             string typeResourse = GetTypeFromString(codeObject);
             switch (typeResourse) {
-                case "something":
-                    return TypeMeterData.MeterData;
                 case "water":
                     return TypeMeterData.MeterDataWater;
                 case "electro":
@@ -94,7 +95,7 @@ namespace _2TaskPIS {
             }
         }
 
-        static private string GetTypeFromString( string codeObject ) {
+        static private string GetTypeFromString(string codeObject) {
 
             int indexFirstForging = codeObject.IndexOf("'");
             int indexLastForging = codeObject.IndexOf("'", indexFirstForging + 1);
